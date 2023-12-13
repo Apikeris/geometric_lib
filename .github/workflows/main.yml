@@ -5,7 +5,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on:
+      - ubuntu-latest
+      - windows-latest
 
     steps:
 
@@ -16,4 +18,8 @@ jobs:
         with:
           python-version: "3.10"
       - name: run tests
-        run: test_circle.py
+        run: |
+          python test_circle.py
+          python test_rectangle.py
+          python test_square.py
+          python test_triangle.py
