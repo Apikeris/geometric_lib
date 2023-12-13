@@ -1,25 +1,35 @@
-name: main
+name: Run Unit Tests
 
 on:
-  push
+  push:
+    branches:
+      - main
 
 jobs:
   test:
-    runs-on:
-      - ubuntu-latest
-      - windows-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - name: run tests
-        run: |
-          python test_circle.py
-          python test_rectangle.py
-          python test_square.py
-          python test_triangle.py
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Замените на ваш способ установки зависимостей
+
+    - name: run tests
+      run: |
+        python test_circle.py
+        python test_rectangle.py
+        python test_square.py
+        python test_triangle.py
